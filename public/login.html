@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ru"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Мероприятия — вход</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Unbounded:wght@600&display=swap">
+<style>
+:root{
+  --bg:#f6f6f8; --surface:#fff; --text:#14141a; --text-mute:#8b8b98; --border:#e3e4e9;
+  --accent:#6c4bf4; --accent-2:#b45cff; --accent-soft:rgba(108,75,244,.10); --err:#c0503f;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0c0c10; --surface:#16161d; --text:#f2f2f5; --text-mute:#77778a; --border:#292933;
+  --accent:#9d84ff; --accent-2:#c98cff; --accent-soft:rgba(157,132,255,.15); --err:#e8877a;
+  color-scheme:dark;}}
+*{box-sizing:border-box}
+body{margin:0;min-height:100svh;display:grid;place-items:center;padding:24px;color:var(--text);
+  background:radial-gradient(900px 500px at 85% -10%, var(--accent-soft), transparent 60%), var(--bg);
+  font:16px/1.6 "Manrope",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+form{display:flex;flex-direction:column;gap:12px;width:100%;max-width:340px}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0}
+h1{font-family:"Unbounded",system-ui,sans-serif;font-size:26px;letter-spacing:-.03em;margin:0 0 4px;line-height:1.1}
+input{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--border);background:var(--surface);
+  color:var(--text);font:inherit;font-size:15px}
+input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+button{padding:12px 16px;border:none;border-radius:999px;font:inherit;font-weight:700;cursor:pointer;color:#fff;
+  background:linear-gradient(120deg,var(--accent),var(--accent-2));box-shadow:0 10px 22px -12px var(--accent)}
+button:hover{filter:brightness(1.06)}
+button[disabled]{opacity:.5;cursor:default}
+.err{color:var(--err);font-size:14px;min-height:20px;margin:0;font-weight:600}
+.hint{color:var(--text-mute);font-size:13px;margin:4px 0 0}
+</style></head><body>
+<form id="f">
+  <p class="eyebrow">Мероприятия</p>
+  <h1>Доступ по паролю</h1>
+  <input type="password" id="p" placeholder="Пароль" autocomplete="current-password" autofocus>
+  <button id="b">Войти</button>
+  <p class="err" id="e"></p>
+  <p class="hint">Общий пароль для входа. Правки открываются отдельным паролем уже внутри.</p>
+</form>
+<script>
+document.getElementById('f').onsubmit = async (ev) => {
+  ev.preventDefault();
+  const p = document.getElementById('p'), e = document.getElementById('e'), b = document.getElementById('b');
+  e.textContent = ''; b.disabled = true; b.textContent = 'Проверяю…';
+  try {
+    const r = await fetch('/api/login', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ password: p.value })
+    });
+    if (r.ok) { location.href = '/'; return; }
+    e.textContent = 'Неверный пароль';
+  } catch { e.textContent = 'Нет связи с сервером'; }
+  b.disabled = false; b.textContent = 'Войти'; p.select();
+};
+</script>
+</body></html>
