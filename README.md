@@ -91,6 +91,7 @@ curl -X POST "https://api.telegram.org/bot<ТОКЕН>/setWebhook" \
 Затем в телеграме написать боту `/start`.
 
 ## Как пользоваться ботом
+<img width="1470" height="795" alt="Screenshot 2026-09-15 at 12 07 36" src="https://github.com/user-attachments/assets/f53c46a3-f0f9-4397-abe6-c099da0e6132" />
 
 **Занести мероприятие.** Переслать боту приглашение, анонс или переписку —
 текстом, картинкой, PDF или текстовым файлом.
